@@ -24,9 +24,7 @@ def get_average_temp(filename):
         response_2 = client1.service.ConvertTemp(Temperature=average_temp,
                                                     FromUnit='degreeFahrenheit',
                                                     ToUnit='degreeCelsius')
-        print(response_2)
-
-
+        print('Average temp in Celsius (2): {}'.format(response_2))
 
 
 get_average_temp('./txt/temps.txt')
