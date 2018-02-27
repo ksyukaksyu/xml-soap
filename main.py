@@ -1,10 +1,14 @@
 import osa
+import math
 
-URL = 'http://www.webservicex.net/ConvertTemperature.asmx?WSDL'
-client1 = osa.client.Client(URL)
+URL1 = 'http://www.webservicex.net/ConvertTemperature.asmx?WSDL'
+client1 = osa.client.Client(URL1)
 
 URL2 = 'http://www.webservicex.net/length.asmx?WSDL'
 client2 = osa.client.Client(URL2)
+
+URL3 = 'http://fx.currencysystem.com/webservices/CurrencyServer4.asmx?WSDL'
+client3 = osa.client.Client(URL3)
 
 
 def read_file_in_list(filename):
@@ -46,5 +50,19 @@ def get_way_len(filename):
                                                                                      toLengthUnit='Kilometers')))
 
 
-get_average_temp('./txt/temps.txt')
-get_way_len('./txt/travel.txt')
+def get_cost(filename):
+    file_data_list = read_file_in_list(filename)
+    total_cost = 0
+    for cost in file_data_list:
+        total_cost += client3.service.ConvertToNum(toCurrency='RUB', fromCurrency=cost.split()[2],
+                                                   amount=float(cost.split()[1]), rounding=True)
+    print('Total cost in RUB: {}'.format(math.ceil(total_cost)))
+
+
+def main():
+    get_average_temp('./txt/temps.txt')
+    get_way_len('./txt/travel.txt')
+    get_cost('./txt/currencies.txt')
+
+
+main()
